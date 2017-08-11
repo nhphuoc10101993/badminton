@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load humanize %}
+    <script>
+          $(function() {
+            $( ".datepicker" ).datepicker({
+              changeMonth: true,
+              changeYear: true,
+              yearRange: "1900:2012",
+            });
+          });
+    </script>
+    {% block content %}
+                {% block javascript %}
+                        <script>
+                            function getList(){
+                                        var checkedValue = "";
+                                        var inputElements = document.getElementsByClassName('messagecheck');
+                                        for(var i=0; inputElements[i]; ++i){
+                                            if(inputElements[i].checked){
+                                                checkedValue = inputElements[i].value + ":"+ checkedValue;
+                                            }
+                                        }
+                                        document.getElementById("txtListReceipt").value = checkedValue.slice(0,-1);
+                                }
+                            function getConfirmDelete(){
+                                        var answer = confirm("Are you sure?");
+                                        if (answer){
+                                            getList();
+                                        }
+                                }
+                        </script>
+                {% endblock %}
+                <div class="container" align="center">
+                    <div class="section-heading">
+                        <h1 class="title wow fadeInDown" data-wow-delay=".3s">Receipt</h1>
+                    </div>
+                   <div class="container">
+                    {% if not request.user.is_superuser %}
+                        <p>This function used for admin user...</p>
+                    {% else %}
+                        <div class="row">
+                            <div align="right">
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Receipt Players</button>
+                            </div>
+                            <div align="left">
+                                <form action="{% url 'delete_selected_receipt' %}" method="POST">{% csrf_token %}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" onclick="getConfirmDelete();" class="btn btn-danger" id="btnGetList">Delete objects</button>
+                                    <input type="text" name="txtListReceipt" id="txtListReceipt" hidden>
+                                </form>
+                            </div>
+                        </div>
+                        <br>
+                        <br/>
+                        <div class="container">
+                            <div class="row">
+                                <form action="{% url 'search_receipt' %}" method="POST">{% csrf_token %}
+                                    <label for="selectMonth">Month</label>
+                                    <select id="selectMonth" name="selectMonth">
+                                        <script>
+                                            var mySelect = document.getElementById("selectMonth");
+                                            var i = 1;
+                                            var date = new Date();
+                                            var month = date.getMonth() + 1;
+                                            for ( i = 1 ; i <= 12;i++){
+                                                var option = document.createElement('option');
+                                                option.value = option.text = i;
+                                                {% if month %}
+                                                    if (option.value == {{ month }}){
+                                                        option.selected = true;
+                                                    }
+                                                {% else %}
+                                                    if (option.value == month){
+                                                        option.selected = true;
+                                                    }
+                                                {% endif %}
+                                                mySelect.add(option);
+                                            }
+                                        </script>
+                                    </select>&nbsp;&nbsp;
+                                    <label for="selectYear">Year</label>
+                                    <select id="selectYear" name="selectYear">
+                                        <script>
+                                            var selectYear = document.getElementById("selectYear");
+                                            var date = new Date();
+                                            var year = date.getFullYear();
+                                            var y = 1980;
+                                            for (y=year;y >= 1980;y--){
+                                                var optionYear = document.createElement('option');
+                                                optionYear.value = optionYear.text = y;
+                                                selectYear.add(optionYear);
+                                            }
+                                        </script>
+                                    </select>
+                                    <br>
+                                    <br>
+                                    <button type="submit" name="btnSearch" class="btn btn-success">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                        <br>
+                        <div align="right">
+                            {% if messages %}
+                                <ul class="messages">
+                                    {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        <style>
+                            table.sortable thead {
+                                background-color:#eee;
+                                color:#666666;
+                                font-weight: bold;
+                                cursor: default;
+                            }
+                        </style>
+                        <table class="sortable table table-bordered table-hover">
+                            <thead>
+                                <td align="center">Check</td>
+                                <th>Id_Receipt</th>
+                                <th>Receipt_person</th>
+                                <th>Date</th>
+                                <th>Money</th>
+                                <th>Cashier</th>
+                                <th>Reason</th>
+                                <td align="center">Delete</td>
+                                <td align="center">Edit</td>
+                            </thead>
+                            <tbody>
+                                {% for itemReceipt in list_receipt %}
+                                    <tr>
+                                        <td align="center"><input type="checkbox" class="messagecheck" name="checkData" value="{{ itemReceipt.id_receipt }}"></td>
+                                        <td>{{ itemReceipt.id_receipt }}</td>
+                                        <td>{{ itemReceipt.first_name }} {{ itemReceipt.last_name }}</td>
+                                        <td>{{ itemReceipt.date_receipt }}</td>
+                                        <td align="right">{{ itemReceipt.money | intcomma }} VND</td>
+                                        <td>{{ itemReceipt.cashier }}</td>
+                                        <td>{{ itemReceipt.reason }}</td>
+                                        <td align="center">
+                                            <form action="{% url 'delete_receipt' %}" method="POST">{% csrf_token %}
+                                                <input type="text" value="{{ itemReceipt.id_receipt }}" name="txt_id_receipt_delete" id="txt_id_receipt_delete" hidden="hidden">
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                            </form>
+                                        </td>
+                                        <td align="center">
+                                            <form action="{% url 'redirect_edit_receipt' %}" method="POST">{% csrf_token %}
+                                                <input type="text" value="{{ itemReceipt.id_receipt }}" name="txt_id_receipt" id="txt_id_receipt" hidden="hidden">
+                                                <button type="submit" class="btn btn-danger">Edit</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div align="right">
+                                 <ul class="pagination">
+                                    {% for xpage in pagination.page_range %}
+                                        {% if current_page.number == xpage %}
+                                            <li class="active"><span>{{ xpage }} <span class="sr-only">(current)</span></span></li>
+                                        {% else %}
+                                            <li><a href="?page={{ xpage }}">{{ xpage }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                 </ul>
+                        </div>
+                        <!-- Sum of total money -->
+                        <div class="container">
+                            <div align="right">
+                                <p>Sum money of players on {{ month }}/{{ years }} :
+                                    <b>
+                                    {% if sum_money_receipt %}
+                                        {{ sum_money_receipt | intcomma }} VND
+                                    {% else %}
+                                        0 VND
+                                    {% endif %}
+                                    </b>
+                                </p>
+                            </div>
+                        </div>
+                         <!-- Modal -->
+                        <div id="myModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Choose Receipt Person</h4>
+                              </div>
+                              <div class="modal-body">
+                                <form method="post" action="{% url 'add_receipt' %}"> {% csrf_token %}
+                                    <label for="list_username">Choose Player</label>
+                                    <select id="list_username" name="list_username">
+                                        {% for item in listUserUnReceipt %}
+                                            <option value="{{ item.username }}">{{ item.first_name }} {{ item.last_name }}</option>
+                                        {% endfor %}
+                                    </select><br>
+                                    <br>
+                                    <label for="date_receipt">Date  </label>
+                                    <input type="date" class="datepicker" id="date_receipt" name="date_receipt" required="required"><br><br>
+                                    <label for="txtMoney">Money</label>
+                                    <input type="number" required="required" value="0" step="10000" id="txtMoney" name="txtMoney"><br><br>
+                                    <label for="areaReason">Reason</label>
+                                    <textarea row="5" cols="20" id="areaReason" name="areaReason">
+                                        Badminton Money...
+                                    </textarea><br><br>
+                                    <button type="submit" class="btn btn-danger">Submit</button>
+                                </form>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              </div>
+                            </div>
+                            </div>
+                         </div>
+                        <div id="myModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Add new permission for {{ user }}</h4>
+                              </div>
+                              <div class="modal-body">
+                                <form method="post" action="#"> {% csrf_token %}
+                                    <label for="listPermission">Choose permission:</label>
+                                    <select id="listPermission" name="listPermission" title="listPermission">
+                                        {% for item in listPerms %}
+                                            <option value="{{ item.id }}">{{ item.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn btn-danger">Create</button>
+                                </form>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              </div>
+                            </div>
+                            </div>
+                         </div>
+                        {% endif %}
+                    </div>
+                 </div>
+    {% endblock %}

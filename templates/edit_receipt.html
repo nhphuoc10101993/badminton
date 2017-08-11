@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load app_filter %}
+    {% block content %}
+                <div class="container" align="center">
+                    <div class="section-heading">
+                        <h1 class="title wow fadeInDown" data-wow-delay=".3s">Edit Receipt Player</h1>
+                    </div>
+                    <div class="row">
+                        <div class="container">
+                                <h3>Edit Receipt Player : {{ objectReceipt.receipt_person.first_name }} {{ objectReceipt.receipt_person.last_name }}</h3>
+                                <br>
+                                <form method="post" action="{% url 'update_receipt' %}">{% csrf_token %}
+                                    <input type="text" value="{{ objectReceipt.id_receipt }}" hidden="hidden" name="txt_id_receipt_update" id="txt_id_receipt_update">
+                                    <input type="text" value="{{ objectReceipt.receipt_person }}" hidden="hidden" name="txt_receipt_person" id="txt_receipt_person">
+                                    <label for="txt_date_receipt">Date &nbsp;&nbsp;</label>
+                                    <input type="date" name="txt_date_receipt" id="txt_date_receipt" value="{{ objectReceipt.date_receipt | convertDate }}"><br><br>
+                                    <label for="txt_money_receipt">Money&nbsp;&nbsp;</label>
+                                    <input type="number" step="10000" name="txt_money_receipt" id="txt_money_receipt" value="{{ objectReceipt.money }}"> <br><br>
+                                    <label for="areaReason">Reason&nbsp;</label>
+                                    <textarea rows="5" cols="20" id="areaReason" name="areaReason">
+                                        {{ objectReceipt.reason }}
+                                    </textarea><br>
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <a href="{% url 'receipt' %}"><button type="button" class="btn btn-success">Back..</button></a>
+                                </form>
+                                <br>
+                                <p>Result: {{ result }}</p>
+                        </div>
+                    </div>
+                 </div>
+    {% endblock %}

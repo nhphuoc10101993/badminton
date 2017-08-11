@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+    {% load  static %}
+    {% block content %}
+        <section id="works" class="works">
+                <div class="container">
+                    <div class="section-heading">
+                        <h1 class="title wow fadeInDown" data-wow-delay=".3s">Categories</h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-12">
+                            <figure class="wow fadeInLeft animated portfolio-item" data-wow-duration="500ms" data-wow-delay="0ms">
+                                <div class="img-wrapper">
+                                    <img src="{% static 'images/statistic.png' %}" class="img-responsive" >
+                                    <div class="overlay">
+                                        <div class="buttons">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="single-portfolio.html">Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <figcaption>
+                                <h4>
+                                <a href="#">
+                                    Revenue and Expenditure
+                                </a>
+                                </h4>
+                                <p>
+                                    Calculation of revenue and expenditure
+                                </p>
+                                </figcaption>
+                            </figure>
+                        </div>
+                        <div class="col-sm-4 col-xs-12">
+                            <figure class="wow fadeInLeft animated" data-wow-duration="500ms" data-wow-delay="300ms">
+                                <div class="img-wrapper">
+                                    <img src="{% static 'images/list_player.png' %}" height="330px" class="img-responsive">
+                                    <div class="overlay">
+                                        <div class="buttons">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'player_list' %}">Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <figcaption>
+                                <h4>
+                                <a href="{% url 'player_list' %}">
+                                    PLAYERS
+                                </a>
+                                </h4>
+                                <p>
+                                    Include DC9 MEMBERS
+                                </p>
+                                </figcaption>
+                            </figure>
+                        </div>
+                        <div class="col-sm-4 col-xs-12">
+                            <figure class="wow fadeInLeft animated" data-wow-duration="500ms" data-wow-delay="300ms">
+                                <div class="img-wrapper">
+                                    <img src="{% static 'images/payment-and-fees.png' %}" class="img-responsive" alt="" >
+                                    <div class="overlay">
+                                        <div class="buttons">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'receipt' %}">Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <figcaption>
+                                    <h4>
+                                    <a href="#">
+                                        PAID THE FEE
+                                    </a>
+                                    </h4>
+                                    <p>
+                                        List members who paided fee in this month
+                                    </p>
+                                </figcaption>
+                            </figure>
+                        </div>
+                </div>
+             </div>
+        </section>
+            <!--
+            ==================================================
+            Footer Section Start
+            ================================================== -->
+    {% endblock %}

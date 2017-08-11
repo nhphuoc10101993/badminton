@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+    {% block content %}
+                <div class="container" align="center">
+                    <div class="section-heading">
+                        <h1 class="title wow fadeInDown" data-wow-delay=".3s">Player List</h1>
+                    </div>
+                    <div class="row">
+                        <div class="container">
+                            <div align="center">
+                                <form method="POST" action="#">{% csrf_token %}
+                                    <input type="text" name="txtInput" id="txtInput" value="{{ txtInput }}" width="400px">
+                                    <button type="submit" class="btn btn-danger">Search</button>
+                                </form>
+                            </div>
+                            <div align="right"><a href="{% url 'player_list' %}"><button class="btn btn-danger">Refesh</button></a></div>
+                            <h3>Profile Players</h3>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   {% for item in listUser %}
+                                       <tr>
+                                            <td>{{ item.username }}</td>
+                                            <td>{{ item.first_name }}</td>
+                                            <td>{{ item.last_name }}</td>
+                                            <td>{{ item.email }}</td>
+                                       </tr>
+                                   {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                 </div>
+    {% endblock %}

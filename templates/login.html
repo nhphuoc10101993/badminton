@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+    {% block content %}
+                <div class="container" align="center">
+                    <div class="section-heading">
+                        <h1 class="title wow fadeInDown" data-wow-delay=".3s">Login Page</h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4 col-xs-12">
+                                <h3>Welcome login page</h3>
+                                <form method="post">{% csrf_token %}
+                                    {{ form.as_p }}
+                                    <button type="submit" class="btn btn-success">Login</button>
+                                </form>
+                        </div>
+                    </div>
+                 </div>
+    {% endblock %}

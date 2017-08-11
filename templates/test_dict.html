@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+     <div class="container">
+                    <div class="section-heading">
+                        <h1 class="title wow fadeInDown" data-wow-delay=".3s">Create User Page</h1>
+                    </div>
+                    <div class="row">
+                        <div class="container">
+                                <h3>Test_Dict</h3>
+                                <div class="row">
+                                    {% for item in context %}
+                                        <p>{{ item.name }}</p>
+                                        <p>{{ item.image }}</p>
+                                         <p>{{ item.role }}</p>
+                                    {% endfor %}
+                                </div>
+                        </div>
+                    </div>
+     </div>
+{% endblock %}
