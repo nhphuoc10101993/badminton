@@ -38,8 +38,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'rest_framework',
     'BadmintonProject',
     'BadmintonProject.templatetags.app_filter',
+    'api'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -80,8 +82,12 @@ WSGI_APPLICATION = 'BadmintonManagement.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'badminton_dc9',
+        'USER': 'root',
+        'PASSWORD': 'mysql',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 

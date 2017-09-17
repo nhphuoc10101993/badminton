@@ -13,13 +13,13 @@
                                     <img src="{% static 'images/statistic.png' %}" class="img-responsive" >
                                     <div class="overlay">
                                         <div class="buttons">
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="single-portfolio.html">Details</a>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'expense' %}">Details</a>
                                         </div>
                                     </div>
                                 </div>
                                 <figcaption>
                                 <h4>
-                                <a href="#">
+                                <a href="{% url 'expense' %}">
                                     Revenue and Expenditure
                                 </a>
                                 </h4>

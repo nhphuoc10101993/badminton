@@ -9,3 +9,9 @@ class Receipt(models.Model):
     date_receipt = models.DateField(default=datetime.datetime.today())
     money = models.IntegerField(default=0)
     reason = models.TextField()
+class Expenses(models.Model):
+    id_expense = models.AutoField(primary_key=True)
+    expense_person = models.ForeignKey(User)
+    date_expense = models.DateField(default=datetime.date.today())
+    money = models.IntegerField(default=0)
+    reason = models.TextField()

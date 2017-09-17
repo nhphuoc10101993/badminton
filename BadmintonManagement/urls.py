@@ -14,8 +14,10 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from BadmintonProject import urls
+from BadmintonProject import urls as url_bad
+from api import urls as url_api
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^badminton/',include(urls)),
+    url(r'^badminton/',include(url_bad)),
+    url(r'^api/',include(url_api)),
 ]

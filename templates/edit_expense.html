@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load app_filter %}
+    {% block content %}
+                <div class="container" align="center">
+                    <div class="section-heading">
+                        <h1 class="title wow fadeInDown" data-wow-delay=".3s">Edit Expense Player</h1>
+                    </div>
+                    <div class="row">
+                        <div class="container">
+                                <h3>Edit Expense Player : {{ expense_object.expense_person.first_name }} {{ expense_object.expense_person.last_name }}</h3>
+                                <br>
+                                <form method="post" action="{% url 'update_expense' %}">{% csrf_token %}
+                                    <input type="text" value="{{ expense_object.id_expense }}" hidden="hidden" name="txt_id_expense_update" id="txt_id_expense_update">
+                                    <input type="text" value="{{ expense_object.expense_person }}" hidden="hidden" name="txt_expense_person" id="txt_expense_person">
+                                    <label for="txt_date_expense">Date &nbsp;&nbsp;</label>
+                                    <input type="date" name="txt_date_expense" id="txt_date_expense" value="{{ expense_object.date_expense | convertDate }}"><br><br>
+                                    <label for="txt_money_expense">Money&nbsp;&nbsp;</label>
+                                    <input type="number" step="10000" name="txt_money_expense" id="txt_money_expense" value="{{ expense_object.money }}"> <br><br>
+                                    <label for="areaReason">Reason&nbsp;</label>
+                                    <textarea rows="5" cols="20" id="areaReason" name="areaReason">
+                                        {{ expense_object.reason }}
+                                    </textarea><br>
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <a href="{% url 'expense' %}"><button type="button" class="btn btn-success">Back..</button></a>
+                                </form>
+                                <br>
+                                <p>Result: {{ result }}</p>
+                        </div>
+                    </div>
+                 </div>
+    {% endblock %}

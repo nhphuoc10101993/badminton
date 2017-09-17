@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+    {% block content %}
+        <div class="section-heading">
+            <h1 class="title wow fadeInDown" data-wow-delay=".3s">About Page</h1>
+        </div>
+        <div class="container">
+            <div id="piechart" align="center"></div>
+            <script type="text/javascript">
+            // Load google charts
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+            // Draw the chart and set the chart values
+            function drawChart() {
+              var data = google.visualization.arrayToDataTable([
+              ['Function', 'Money'],
+              ['Receipt', {{ sum_money_receipt }}],
+              ['Expense', {{ sum_money_expense }}],
+            ]);
+              // Optional; add a title and set the width and height of the chart
+              var options = {'title':'Statistic money between expense and receipt:{{ month }}/{{ year }}', 'width':550, 'height':400};
+
+              // Display the chart inside the <div> element with id="piechart"
+              var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+              chart.draw(data, options);
+            }
+            </script>
+        </div>
+    {% endblock %}

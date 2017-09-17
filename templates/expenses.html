@@ -32,7 +32,7 @@
                 {% endblock %}
                 <div class="container" align="center">
                     <div class="section-heading">
-                        <h1 class="title wow fadeInDown" data-wow-delay=".3s">Receipt</h1>
+                        <h1 class="title wow fadeInDown" data-wow-delay=".3s">Expense</h1>
                     </div>
                    <div class="container">
                     {% if not request.user.is_superuser %}
@@ -40,24 +40,18 @@
                     {% else %}
                         <div class="row">
                             <div align="right">
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Receipt Players</button>
-                            </div>
-                            <div align="left">
-                                <form action="{% url 'delete_selected_receipt' %}" method="POST">{% csrf_token %}
-                                    &nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" onclick="getConfirmDelete();" class="btn btn-danger" id="btnGetList">Delete objects</button>
-                                    <input type="text" name="txtListReceipt" id="txtListReceipt" hidden>
-                                </form>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Expense</button>
                             </div>
                         </div>
                         <br>
                         <br/>
                         <div class="container">
                             <div class="row">
-                                <form action="{% url 'search_receipt' %}" method="POST">{% csrf_token %}
+                                <form action="{% url 'search_expense' %}" method="POST">{% csrf_token %}
                                     <label for="selectMonth">Month</label>
-                                    <select id="selectMonth" name="selectMonth">
+                                    <select id="selectMonth_Expense" name="selectMonth_Expense">
                                         <script>
-                                            var mySelect = document.getElementById("selectMonth");
+                                            var mySelect = document.getElementById("selectMonth_Expense");
                                             var i = 1;
                                             var date = new Date();
                                             var month = date.getMonth() + 1;
@@ -77,10 +71,10 @@
                                             }
                                         </script>
                                     </select>&nbsp;&nbsp;
-                                    <label for="selectYear">Year</label>
-                                    <select id="selectYear" name="selectYear">
+                                    <label for="selectYear_Expense">Year</label>
+                                    <select id="selectYear_Expense" name="selectYear_Expense">
                                         <script>
-                                            var selectYear = document.getElementById("selectYear");
+                                            var selectYear = document.getElementById("selectYear_Expense");
                                             var date = new Date();
                                             var year = date.getFullYear();
                                             var y = 1980;
@@ -118,34 +112,32 @@
                         <table class="sortable table table-bordered table-hover">
                             <thead>
                                 <td align="center">Check</td>
-                                <th>Id_Receipt</th>
-                                <th>Receipt_person</th>
+                                <th>Id_Expense</th>
+                                <th>Expense_person</th>
                                 <th>Date</th>
                                 <th>Money</th>
-                                <th>Cashier</th>
                                 <th>Reason</th>
                                 <td align="center">Delete</td>
                                 <td align="center">Edit</td>
                             </thead>
                             <tbody>
-                                {% for itemReceipt in list_receipt %}
+                                {% for itemExpense in list_expense %}
                                     <tr>
-                                        <td align="center"><input type="checkbox" class="messagecheck" name="checkData" value="{{ itemReceipt.id_receipt }}"></td>
-                                        <td>{{ itemReceipt.id_receipt }}</td>
-                                        <td>{{ itemReceipt.first_name }} {{ itemReceipt.last_name }}</td>
-                                        <td>{{ itemReceipt.date_receipt }}</td>
-                                        <td align="right">{{ itemReceipt.money | intcomma }} VND</td>
-                                        <td>{{ itemReceipt.cashier }}</td>
-                                        <td>{{ itemReceipt.reason }}</td>
+                                        <td align="center"><input type="checkbox" class="messagecheck" name="checkData" value="{{ itemExpense.id_expense }}"></td>
+                                        <td>{{ itemExpense.id_expense }}</td>
+                                        <td>{{ itemExpense.first_name }} {{ itemExpense.last_name }}</td>
+                                        <td>{{ itemExpense.date_expense }}</td>
+                                        <td align="right">{{ itemExpense.money | intcomma }} VND</td>
+                                        <td>{{ itemExpense.reason }}</td>
                                         <td align="center">
-                                            <form action="{% url 'delete_receipt' %}" method="POST">{% csrf_token %}
-                                                <input type="text" value="{{ itemReceipt.id_receipt }}" name="txt_id_receipt_delete" id="txt_id_receipt_delete" hidden="hidden">
+                                            <form action="{% url 'delete_expense' %}" method="POST">{% csrf_token %}
+                                                <input type="text" value="{{ itemExpense.id_expense }}" name="txt_id_expense_delete" id="txt_id_expense_delete" hidden="hidden">
                                                 <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
                                             </form>
                                         </td>
                                         <td align="center">
-                                            <form action="{% url 'redirect_edit_receipt' %}" method="POST">{% csrf_token %}
-                                                <input type="text" value="{{ itemReceipt.id_receipt }}" name="txt_id_receipt" id="txt_id_receipt" hidden="hidden">
+                                            <form action="{% url 'redirect_edit_expense' %}" method="POST">{% csrf_token %}
+                                                <input type="text" value="{{ itemExpense.id_expense }}" name="txt_id_expense" id="txt_id_expense" hidden="hidden">
                                                 <button type="submit" class="btn btn-danger">Edit</button>
                                             </form>
                                         </td>
@@ -169,8 +161,8 @@
                             <div align="right">
                                 <p>Sum money of players on {{ month }}/{{ years }} :
                                     <b>
-                                    {% if sum_money_receipt %}
-                                        {{ sum_money_receipt | intcomma }} VND
+                                    {% if sum_money_expense %}
+                                        {{ sum_money_expense | intcomma }} VND
                                     {% else %}
                                         0 VND
                                     {% endif %}
@@ -184,24 +176,24 @@
                             <div class="modal-content">
                               <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Choose Receipt Person</h4>
+                                <h4 class="modal-title">Choose Expense Action</h4>
                               </div>
                               <div class="modal-body">
-                                <form method="post" action="{% url 'add_receipt' %}"> {% csrf_token %}
+                                <form method="post" action="{% url 'add_expense' %}"> {% csrf_token %}
                                     <label for="list_username">Choose Player</label>
                                     <select id="list_username" name="list_username">
-                                        {% for item in listUserUnReceipt %}
+                                        {% for item in listUserUnExpense %}
                                             <option value="{{ item.username }}">{{ item.first_name }} {{ item.last_name }}</option>
                                         {% endfor %}
                                     </select><br>
                                     <br>
-                                    <label for="date_receipt">Date  </label>
-                                    <input type="date" class="datepicker" id="date_receipt" name="date_receipt" required="required"><br><br>
+                                    <label for="date_expense">Date  </label>
+                                    <input type="date" class="datepicker" id="date_expense" name="date_expense" required="required"><br><br>
                                     <label for="txtMoney">Money</label>
                                     <input type="number" required="required" value="0" step="10000" id="txtMoney" name="txtMoney"><br><br>
                                     <label for="areaReason">Reason</label>
                                     <textarea row="5" cols="20" id="areaReason" name="areaReason">
-                                        Badminton Money
+                                        Shuttlecock
                                     </textarea><br><br>
                                     <button type="submit" class="btn btn-danger">Submit</button>
                                 </form>
